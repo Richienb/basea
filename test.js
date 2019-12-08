@@ -1,13 +1,10 @@
 import test from "ava"
-import theModule from "."
+import basea from "."
 
 test("main", (t) => {
-    t.throws(() => {
-        theModule(123)
-    }, {
-        instanceOf: TypeError,
-        message: "Expected a string, got number",
-    })
-
-    t.is(theModule("unicorns"), "unicorns & rainbows")
+    // TODO: Finish these tests.
+    t.is(basea(150, 16), "96")
+    t.is(basea(96, 16, 10), 150)
+    t.is(basea("d", "abc"), NaN)
+    t.is(basea(1, "abc"), "b")
 })
