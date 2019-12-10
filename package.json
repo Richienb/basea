@@ -1,6 +1,6 @@
 {
     "name": "basea",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "description": "Convert between numerical bases.",
     "repository": "https://github.com/Richienb/basea.git",
     "author": "Richie Bendall <richiebendall@gmail.com>",
