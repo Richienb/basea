@@ -1,6 +1,6 @@
 declare type baseType = number | string
 
-declare interface baseObject {
+declare interface baseChars {
     [base: number]: string
 }
 
@@ -13,21 +13,25 @@ declare const basea: {
      * @example
      * ```
      * const basea = require("basea");
+     *
+     * basea(20, 16); // Convert 20 to base 16
+     * //=> '14'
+     *
+     * basea("14", 16, 10); // Convert 20 to base 10 from base 16
+     * //=> '20'
+     *
+     * basea(10, "abc"); // Convert 10 to use a custom base
+     * //=> 'bab'
      * ```
      */
-    <T extends baseType>(number: number, to: T): T
+    (number: number, to: baseType): baseType
     (number: string, from: string): number
-    <T extends baseType>(number: string, from: string, to: T): T
-    <T extends baseType, U extends baseType>(number: T, from: T, to: U): U
+    (number: baseType, from: baseType, to: baseType): baseType
 
     /**
-     * Configure a numerical base.
-     * @param base The base to configure.
-     * @param baseObj The base object to configure.
-     * @param characters The characters to use.
+     * Numerical bases to use for conversion. Can be modified to affect the output of basea.
     */
-    base(baseObj: baseObject): void
-    base(base: number, characters: string): void
+    bases: baseChars
 }
 
 export = basea;

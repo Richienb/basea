@@ -1,55 +1,62 @@
 "use strict"
 
-const { toBase, fromBase, toAlphabet, fromAlphabet } = require("bases")
-const _ = require("lodash")
+const { toAlphabet, fromAlphabet, KNOWN_ALPHABETS: knownBases } = require("bases")
+const is = require("@sindresorhus/is")
 
-let customBases = {
+const baseChars = {
+    0: "", // No characters for base 0
     1: "/", // Tallies for base 1
+    ...knownBases, // Other known bases
 }
-const supportedBases = _.concat(_.range(2, 10), _.range(26, 52), _.range(11, 62), _.range(32, 58), 64)
-const isSupportedBase = (base) => supportedBases.includes(base)
 
 module.exports = (number, from, to) => {
-    // TODO: Simplify logic
+    // If `number` is an invalid type
     if (
-        !_.isString(number) &&
-        !_.isNumber(number)
+        !is.string(number) &&
+        !is.number(number)
     ) return NaN
 
-    if (!_.isNil(from) && !_.isNumber(from) && !_.isString(from)) return NaN
-
-    from = from || customBases[from]
-    to = to || customBases[to]
-
+    // If `from` is an invalid type
     if (
-        !_.isNil(from) &&
-        !_.isNil(to) &&
+        !is.undefined(from) &&
+        !is.number(from) &&
+        !is.string(from)
+    ) return NaN
+
+    // If `from` and `to` are the same but not undefined
+    if (
+        !is.undefined(from) &&
+        !is.undefined(to) &&
         from === to
     ) return number
 
-    if (_.isNil(to) && _.isNumber(number)) {
+    if (is.string(number) && is.string(from) && is.undefined(to)) {
+        // If only `number` and `from` are strings assume converting to decimal ("aa", "abc")
+        to = 10
+    } else if (!is.undefined(from) && is.undefined(to)) {
+        // If only `number` and `to` provided assume from is 10 (10, 16) or (10, "abc") or (1, "abc")
         to = from
         from = 10
-    } else if (_.isNil(to) && _.isString(from)) {
-        to = 10
-    } else if (_.isNil(to)) {
-        return NaN
     }
 
-    if (!isSupportedBase(from) && !from) return NaN
-    if (!isSupportedBase(to) && !to) return NaN
+    // Try to get the characters for the base
+    if (is.number(from)) from = baseChars[from]
+    if (is.number(to)) to = baseChars[to]
 
-    if (_.isString(from) && number.toString().split("").some((value) => !from.includes(value))) return NaN
+    // If base is not found
+    if (is.undefined(from) || is.undefined(to)) return NaN
 
-    const decNumber = (_.isNumber(from) ? fromBase : fromAlphabet)(number.toString(), from)
-    const res = (_.isNumber(to) ? toBase : toAlphabet)(decNumber, to)
+    // If from is a string and the provided number has invalid characters that aren't in the string
+    if (is.string(from) && number.toString().split("").some((value) => !from.includes(value))) return NaN
 
-    if (_.isNumber(to) && to <= 10) return Number(res)
+    // Convert the number
+    const res = toAlphabet(fromAlphabet(number.toString(), from), to)
+
+    // If the provided base only contains numbers
+    if (!is.nan(Number(to))) return Number(res)
+
+    // If the base has 1 or more letter
     return res
 }
 
-module.exports.base = (base, characters) => {
-    // TODO: Check if characters are the right length for the base.
-    if (_.isPlainObject(base)) customBases = _.extend(customBases, base)
-    else customBases[base] = characters
-}
+module.exports.bases = baseChars

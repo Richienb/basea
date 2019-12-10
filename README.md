@@ -1,41 +1,58 @@
-# The module [![Travis CI Build Status](https://img.shields.io/travis/com/Richienb/the-module/master.svg?style=for-the-badge)](https://travis-ci.com/Richienb/the-module)
+# Basea [![Travis CI Build Status](https://img.shields.io/travis/com/Richienb/basea/master.svg?style=for-the-badge)](https://travis-ci.com/Richienb/basea)
 
-My awesome module.
+Convert between numerical bases.
 
-[![NPM Badge](https://nodei.co/npm/the-module.png)](https://npmjs.com/package/the-module)
+[![NPM Badge](https://nodei.co/npm/basea.png)](https://npmjs.com/package/basea)
 
 ## Install
 
 ```sh
-npm install the-module
+npm install basea
 ```
 
 ## Usage
 
 ```js
-const theModule = require("the-module");
+const basea = require("basea");
 
-theModule("unicorns");
-//=> 'unicorns & rainbows'
+basea(20, 16); // Convert 20 to base 16
+//=> '14'
+
+basea("14", 16, 10); // Convert 20 to base 10 from base 16
+//=> '20'
+
+basea(10, "abc"); // Convert 10 to use a custom base
+//=> 'bab'
 ```
 
 ## API
 
-### theModule(input, options?)
+### basea(number, from, to)
 
-#### input
+### basea(number, to)
 
-Type: `string`
+### basea(stringNumber, from)
 
-Lorem ipsum.
+#### number
 
-#### options
+Type: `number or string`
+
+The number to convert.
+
+#### from
+
+Type: `number or string`
+
+The base to convert from.
+
+#### to
+
+Type: `number or string`
+
+The base to convert to.
+
+### basea.bases
 
 Type: `object`
 
-##### postfix
-
-Type: `string`\
-Default: `rainbows`
-
-Lorem ipsum.
+Numerical bases to use for conversion. Can be modified to affect the output of basea, such as `basea.bases[999] = "abc"`.

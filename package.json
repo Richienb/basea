@@ -1,8 +1,8 @@
 {
-    "name": "the-module",
+    "name": "basea",
     "version": "0.0.0",
-    "description": "My awesome module.",
-    "repository": "https://github.com/Richienb/the-module.git",
+    "description": "Convert between numerical bases.",
+    "repository": "https://github.com/Richienb/basea.git",
     "author": "Richie Bendall <richiebendall@gmail.com>",
     "license": "MIT",
     "main": "index.js",
@@ -11,26 +11,35 @@
         "index.d.ts"
     ],
     "engines": {
-        "node": ">=8"
+        "node": ">=8.3"
     },
     "scripts": {
         "lint": "xo",
         "test": "yarn lint && ava"
     },
-    "keywords": [],
+    "keywords": [
+        "base",
+        "number",
+        "math",
+        "symbol",
+        "alphabet"
+    ],
     "dependencies": {
-        "bases": "^0.2.1",
-        "lodash": "^4.17.15"
+        "@sindresorhus/is": "^1.2.0",
+        "bases": "^0.2.1"
     },
     "devDependencies": {
-        "ava": "^2.1.0",
+        "ava": "^2.4.0",
         "eslint-config-richienb": "^0.2.3",
         "xo": "^0.25.3"
     },
     "resolutions": {
-        "eslint": "^6.6.0"
+        "eslint": "^6.7.2"
     },
     "xo": {
-        "extends": "richienb/node"
+        "extends": "richienb/node",
+        "rules": {
+            "complexity": 0
+        }
     }
 }
